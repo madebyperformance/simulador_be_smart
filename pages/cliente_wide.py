@@ -205,7 +205,11 @@ smart["Mês"] = smart["Mês"].apply(
                 lambda x: DT.datetime.strftime(x, "%m-%y")
             )
 mapas = dict(dark[["ativo_id","Ativo"]].values)
-smart["Produtos"] = smart.ativo_id.map(mapas)
+
+try:
+    smart["Produtos"] = smart.ativo_id.map(mapas)
+except: 
+     smart["Produtos"] = 0
 
 try:
     smart['Total Bruto'] = smart['Faturamento'].fillna(0) + smart['Resultado Bruto'].fillna(0)
@@ -231,9 +235,13 @@ final["Mês"] = final["Mês"].apply(
     lambda x: DT.datetime.strftime(x, "%b-%y")
 )
 final = final.sort_values(["ano", "mes"]).reset_index(drop=True)
-final['Resultado assessor'] = final['Resultado assessor'].astype('float64')
+try: 
+    final['Resultado assessor'] = final['Resultado assessor'].astype('float64')
+    final['Resultado assessor'] = final['Resultado assessor'].fillna(0)
+except:
+    final['Resultado assessor'] = 0
 
-final['Resultado assessor'] = final['Resultado assessor'].fillna(0)
+    
 #st.dataframe(final)
 final["data"] = final["Mês"].apply(lambda x: DT.datetime.strptime(x,"%b-%y"))
 final["data"] = final["data"].apply(lambda x: DT.datetime.strftime(x, "%Y/%m"))
