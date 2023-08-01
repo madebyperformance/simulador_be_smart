@@ -434,6 +434,8 @@ if st.button("Voltar"):
 
 with open(r'style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    
+st.markdown('<div style="position: fixed; bottom: 0; right: 100px;"><p style="color: white;"><span style="color:black;font-size: 20px;font-family: Barlow;"><strong>MADE BY </strong></span><span style="color:#000000;font-size: 20px; font-family: Barlow , sans-serif; "><strong>PERFORMANCE</strong></span></p></div>', unsafe_allow_html=True)
 
     
 # except:
