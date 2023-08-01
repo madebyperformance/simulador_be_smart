@@ -900,3 +900,6 @@ if st.button('Logout',key='logout2'):
     st.session_state["logout"] =None
     if st.session_state["logout"]==None:
         nav_page('')
+
+st.markdown('<div style="position: fixed; bottom: 0; right: 100px;"><p style="color: white;"><span style="color:black;font-size: 20px;font-family: Barlow;"><strong>MADE BY </strong></span><span style="color:#000000;font-size: 20px; font-family: Barlow , sans-serif; "><strong>PERFORMANCE</strong></span></p></div>', unsafe_allow_html=True)
+
