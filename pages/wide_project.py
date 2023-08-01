@@ -350,17 +350,20 @@ for i in fair["ativo_id"].unique():
         & (face["Produto"] == "Crédito XP")]
     #st.dataframe(masquerede)
     if df.empresa.iloc[0] == "INVESTSMART":
-        grasph_df = base_df(
-            df.data_venc.iloc[0],
-            df.data_ativo.iloc[0],
-            df.pl_aplicado.iloc[0],
-            df.retorno.iloc[0],
-            df.roa_head.iloc[0],
-            df.roa_rec.iloc[0],
-            st.session_state.reps_investsmart,
-            moeda_real=False,
-        )
-        grasph_df["id"] = df.client_id[0]
+        try:
+            grasph_df = base_df(
+                df.data_venc.iloc[0],
+                df.data_ativo.iloc[0],
+                df.pl_aplicado.iloc[0],
+                df.retorno.iloc[0],
+                df.roa_head.iloc[0],
+                df.roa_rec.iloc[0],
+                st.session_state.reps_investsmart,
+                moeda_real=False,
+            )
+            grasph_df["id"] = df.client_id[0]
+        except:
+            print(0)
     else:
         if df.empresa.iloc[0] == "Seguros":
             repasse = st.session_state.reps_seguro
