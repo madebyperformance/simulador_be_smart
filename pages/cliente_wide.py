@@ -28,12 +28,16 @@ v3 = st.session_state.df_cliente.client_id[0]
 
 st.set_page_config(
     page_icon="invest_smart_logo.png",
-    page_title="Simulador - Ativos 0.55",
+    page_title="Simulador - Ativos 0.98",
     initial_sidebar_state="collapsed",
     layout="wide",
 )
 
 df = PositivadorBitrix().get_produto_cliente_id(int(v3))
+
+
+
+
 #df = PositivadorBitrix().get_produto_v2()
 df = df.rename(columns={
     st.secrets.VAR_ID_CLIENTE:'client_id',
@@ -142,7 +146,7 @@ with col22:
     
 vacuo141, retorno2, ano1_avg2, ano2_avg2 = st.columns([ 1.5,5, 5, 3])
 
-face_v2 = pd.read_excel("base_besmart_v3.xlsx")
+face_v2 = pd.read_excel("base_besmart_v4.1.xlsx")
 face_v2["Categoria"] = face_v2["Categoria"].apply(lambda x: x.replace("_", " "))
 face_v2["Produto"] = face_v2["Produto"].apply(lambda x: x.replace("_", " "))
 face_v2["porcem_repasse"] = face_v2["porcem_repasse"] * 100.0
@@ -179,7 +183,7 @@ for i in dark["ativo_id"].unique():
                         repasse1 = st.session_state.reps_credito
                     else:
                         repasse1 = st.session_state.reps_imovel
-
+                
                     grasph_df = besmart_base(
                         df_v2["Data de Vencimento"].iloc[0],
                         df_v2["Data de Início"].iloc[0],
@@ -241,7 +245,7 @@ try:
 except:
     final['Resultado assessor'] = 0
 
-    
+
 #st.dataframe(final)
 final["data"] = final["Mês"].apply(lambda x: DT.datetime.strptime(x,"%b-%y"))
 final["data"] = final["data"].apply(lambda x: DT.datetime.strftime(x, "%Y/%m"))
@@ -719,7 +723,10 @@ st.markdown(
 
 with open(r'style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+
 st.markdown('<div style="position: fixed; bottom: 0; right: 100px;"><p style="color: white;"><span style="color:black;font-size: 20px;font-family: Barlow;"><strong>MADE BY </strong></span><span style="color:#000000;font-size: 20px; font-family: Barlow , sans-serif; "><strong>PERFORMANCE</strong></span></p></div>', unsafe_allow_html=True)
+
 
 #except:
     #nav_page('error')
