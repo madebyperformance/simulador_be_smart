@@ -16,6 +16,7 @@ import requests
 
 locale.setlocale(locale.LC_ALL, "pt_BR.UTF-8")
 
+
 if 'usuario' not in st.session_state:
     nav_page('error')
 
@@ -26,10 +27,17 @@ st.set_page_config(
     layout="wide",
 )
 
+
+
+
+
+
 #df = pd.read_sql("SELECT * FROM cliente", con)
 courier= int(st.secrets.courier)
+
 df = PositivadorBitrix().get_all_data_cliente(courier)
 df = df.rename(columns={st.secrets.id:'client_id',st.secrets.VAR_SIGLA_ASSESSOR:'sigla',st.secrets.VAR_NOME_CLIENTE:'nome_client',st.secrets.VAR_DATA_ENTRADA_CLIENTE:'data_cliente'})
+  
 
 dark = df.copy()
 dark = dark.rename(
@@ -116,7 +124,7 @@ st.write(
 df_reps = PositivadorBitrix().get_repasse_v2(st.session_state["usuario"])
 df_reps = df_reps.rename(columns={
     st.secrets.VAR_ID_EMAIL:'id_email',
-    #st.secrets.VAR_REPASSE_INVESTSMART:'repasse_investsmart',
+    st.secrets.VAR_REPASSE_INVESTSMART:'repasse_investsmart',
     st.secrets.VAR_REPASSE_SEGUROS:'repasse_seguros',
     st.secrets.VAR_REPASSE_CAMBIO:'repasse_cambio',
     st.secrets.VAR_REPASSE_CREDITO:'repasse_credito',
@@ -125,7 +133,7 @@ df_reps = df_reps.rename(columns={
     })
 #st.dataframe(df_reps)
 
-space,reps1, reps2, reps3, reps4, reps5, space2 = st.columns( [5,3 ,3 ,3 ,3 ,3, 5] )
+space, reps1, reps2, reps3, reps4, reps5, space2 = st.columns( [5,3 ,3 ,3 ,3 ,3, 5] )
 
 space3,salve,space4=st.columns( [5,1,5] )
 st.markdown(
@@ -154,14 +162,15 @@ chart1, = st.columns([4])
 #######################################################################################
 
 try:
-    #repasse_invest=df_reps['repasse_investsmart'].iloc[0]
+    repasse_invest=df_reps['repasse_investsmart'].iloc[0]
     repasse_seguro=df_reps['repasse_seguros'].iloc[0]
     repasse_cambio=df_reps['repasse_cambio'].iloc[0]
     repasse_credito=df_reps['repasse_credito'].iloc[0]
     repasse_imovel=df_reps['repasse_imovel'].iloc[0]
     repasse_id = df_reps['repasse_id'].iloc[0]
-    #with reps1:
-        #reps_investsmart=st.number_input('(%) Repasse da InvestSmart',value=int(repasse_invest),min_value=0,max_value=100)
+    #reps_investsmart=st.number_input('(%) Repasse da InvestSmart',value=int(repasse_invest),min_value=0,max_value=100)
+    # with reps1:
+    #      reps_investsmart=st.number_input('(%) Repasse da InvestSmart',value=int(repasse_invest),min_value=0,max_value=100)
     with reps2:
         reps_seguro=st.number_input('(%) Repasse de Seguros',value=int(repasse_seguro),min_value=0,max_value=100)
     with reps3:
@@ -171,8 +180,8 @@ try:
     with reps5:
         reps_imovel=st.number_input('(%) Repasse de Imóveis',value=int(repasse_imovel),min_value=0,max_value=100) 
 except:    
-    #with reps1:
-        #reps_investsmart=st.number_input('(%) Repasse da InvestSmart',value=50,min_value=0,max_value=100)
+    # with reps1:
+    #      reps_investsmart=st.number_input('(%) Repasse da InvestSmart',value=50,min_value=0,max_value=100)
     with reps2:
         reps_seguro=st.number_input('(%) Repasse de Seguros',value=50,min_value=0,max_value=100)
     with reps3:
@@ -183,11 +192,12 @@ except:
         reps_imovel=st.number_input('(%) Repasse de Imóveis',value=50,min_value=0,max_value=100)
 #st.write(repasse_id)
 
-#st.session_state['reps_investsmart']=reps_investsmart
+st.session_state['reps_investsmart']=50
 st.session_state['reps_seguro']=reps_seguro
 st.session_state['reps_cambio']=reps_cambio
 st.session_state['reps_credito']=reps_credito
 st.session_state['reps_imovel']=reps_imovel
+
 
 with salve:
     if st.button('Salvar valores'):
@@ -216,7 +226,9 @@ with salve:
             st.success("O cliente foi adicionado ao banco de dados")
             
             st._rerun()
-            
+
+
+
 
 
 #######################################################################################
@@ -334,7 +346,7 @@ else:
 smart = pd.DataFrame(columns=["Mês", "Resultado assessor",'Faturamento','Resultado Bruto'])
 
 
-face = pd.read_excel("base_besmart_v3.xlsx")
+face = pd.read_excel("base_besmart_v4.1.xlsx")
 face["Categoria"] = face["Categoria"].apply(lambda x: x.replace("_", " "))
 face["Produto"] = face["Produto"].apply(lambda x: x.replace("_", " "))
 face["porcem_repasse"] = face["porcem_repasse"] * 100.0
@@ -350,20 +362,17 @@ for i in fair["ativo_id"].unique():
         & (face["Produto"] == "Crédito XP")]
     #st.dataframe(masquerede)
     if df.empresa.iloc[0] == "INVESTSMART":
-        try:
-            grasph_df = base_df(
-                df.data_venc.iloc[0],
-                df.data_ativo.iloc[0],
-                df.pl_aplicado.iloc[0],
-                df.retorno.iloc[0],
-                df.roa_head.iloc[0],
-                df.roa_rec.iloc[0],
-                st.session_state.reps_investsmart,
-                moeda_real=False,
-            )
-            grasph_df["id"] = df.client_id[0]
-        except:
-            print(0)
+        grasph_df = base_df(
+            df.data_venc.iloc[0],
+            df.data_ativo.iloc[0],
+            df.pl_aplicado.iloc[0],
+            df.retorno.iloc[0],
+            df.roa_head.iloc[0],
+            df.roa_rec.iloc[0],
+            0,
+            moeda_real=False,
+        )
+        grasph_df["id"] = df.client_id[0]
     else:
         if df.empresa.iloc[0] == "Seguros":
             repasse = st.session_state.reps_seguro
@@ -901,5 +910,5 @@ if st.button('Logout',key='logout2'):
     if st.session_state["logout"]==None:
         nav_page('')
 
-st.markdown('<div style="position: fixed; bottom: 0; right: 100px;"><p style="color: white;"><span style="color:black;font-size: 20px;font-family: Barlow;"><strong>MADE BY </strong></span><span style="color:#000000;font-size: 20px; font-family: Barlow , sans-serif; "><strong>PERFORMANCE</strong></span></p></div>', unsafe_allow_html=True)
 
+st.markdown('<div style="position: fixed; bottom: 0; right: 100px;"><p style="color: white;"><span style="color:black;font-size: 20px;font-family: Barlow;"><strong>MADE BY </strong></span><span style="color:#000000;font-size: 20px; font-family: Barlow , sans-serif; "><strong>PERFORMANCE</strong></span></p></div>', unsafe_allow_html=True)
