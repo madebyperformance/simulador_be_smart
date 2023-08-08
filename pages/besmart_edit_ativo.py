@@ -74,7 +74,7 @@ with prem:
     if "disabled" not in st.session_state:
         st.session_state.disabled = True
 
-    face = pd.read_excel("base_besmart_v3.xlsx")
+    face = pd.read_excel("base_besmart_v4.1.xlsx")
     face["Categoria"] = face["Categoria"].apply(lambda x: x.replace("_", " "))
     face["Produto"] = face["Produto"].apply(lambda x: x.replace("_", " "))
     face["porcem_repasse"] = face["porcem_repasse"] * 100.0
@@ -255,22 +255,33 @@ with prem:
             st.session_state["disabled"] = not st.session_state["disabled"]
 
 bad_prod = [
-    "GARSON - Antecipação de Recebiveis",
-    "Operações Estruturadas com Garantia Reais(Bens e Recebíveis)",
-    "Ulend - Capital de Giro Clean",
-    "Precato",
-    "LTZ Capital",
-    "Acredite",
-    "EasyPrec",
-    "JEEVES - Capital de Giro Clean",
-    "Planta Consultoria - Agro",
-    "UHY - Crédito PJ",
-    "LISTO - Antecipação de maquininhas CDC Capital de Giro até 24x",
-    "RM2 - Antacipação de Recebiveis",
-    "LOARA - PJ",
-    "BANEFORT - PJ",
-]
-        
+        "GARSON - Antecipação de Recebiveis",
+        "Operações Estruturadas com Garantia Reais(Bens e Recebíveis)",
+        "Ulend - Capital de Giro Clean",
+        "Precato",
+        "LTZ Capital",
+        "Acredite",
+        "EasyPrec",
+        "JEEVES - Capital de Giro Clean",
+        "Planta Consultoria - Agro",
+        "UHY - Crédito PJ",
+        "LISTO - Antecipação de maquininhas CDC Capital de Giro até 24x",
+        "RM2 - Antacipação de Recebiveis",
+        "LOARA - PJ",
+        "BANEFORT - PJ",
+        "BS2 Câmbio Pronto",
+        "Ourinvest Câmbio Pronto",
+        "Ourinvest Derivativo (Ndf)",
+        "Ourinvest Trade Finance (Juros Remuneratórios Recebidos Do Cliente, Pelo Ourinvest)",
+        "Rendimento Câmbio Pronto",
+        "B&T Câmbio Pronto",
+        "Braza Bank Câmbio Pronto",
+        "Moneycorp Câmbio Pronto",
+        "Travelex Câmbio Pronto",
+        "XP Câmbio Pronto",
+        "XP Derivativos  (Operando Com Margem De Garantia)",
+        "XP Derivativos  (Com Limite De Crédito, Sem Margem)"
+    ]     
 if produto in bad_prod:
     with table:
         st.text("")
@@ -434,10 +445,10 @@ if st.button("Voltar"):
 
 with open(r'style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-    
+
+
 st.markdown('<div style="position: fixed; bottom: 0; right: 100px;"><p style="color: white;"><span style="color:black;font-size: 20px;font-family: Barlow;"><strong>MADE BY </strong></span><span style="color:#000000;font-size: 20px; font-family: Barlow , sans-serif; "><strong>PERFORMANCE</strong></span></p></div>', unsafe_allow_html=True)
 
-    
 # except:
     #nav_page('error')
    
